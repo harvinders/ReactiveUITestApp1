@@ -46,5 +46,10 @@ namespace ReactiveUITestApp1
         {
             return new Views.ShellPage();
         }
+
+        protected override async void OnShareTargetActivated(ShareTargetActivatedEventArgs args)
+        {
+            await ActivationService.ActivateFromShareTargetAsync(args);
+        }
     }
 }

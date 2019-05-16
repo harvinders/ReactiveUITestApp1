@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using ReactiveUITestApp1.Activation;
+using ReactiveUITestApp1.Core.Helpers;
 
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -88,12 +89,21 @@ namespace ReactiveUITestApp1.Services
 
         private IEnumerable<ActivationHandler> GetActivationHandlers()
         {
-            yield break;
+            yield return Singleton<ShareTargetActivationHandler>.Instance;
         }
 
         private bool IsInteractive(object args)
         {
             return args is IActivatedEventArgs;
+        }
+
+        internal async Task ActivateFromShareTargetAsync(ShareTargetActivatedEventArgs activationArgs)
+        {
+            var shareTargetHandler = GetActivationHandlers().FirstOrDefault(h => h.CanHandle(activationArgs));
+            if (shareTargetHandler != null)
+            {
+                await shareTargetHandler.HandleAsync(activationArgs);
+            }
         }
     }
 }
