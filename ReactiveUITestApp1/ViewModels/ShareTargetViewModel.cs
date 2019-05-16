@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -6,6 +7,7 @@ using ReactiveUITestApp1.Helpers;
 
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.DataTransfer.ShareTarget;
+using ReactiveUI;
 
 namespace ReactiveUITestApp1.ViewModels
 {
@@ -21,12 +23,15 @@ namespace ReactiveUITestApp1.ViewModels
             set => Set(ref _sharedData, value);
         }
 
-        private ICommand _completeCommand;
+        //private ICommand _completeCommand;
 
-        public ICommand CompleteCommand => _completeCommand ?? (_completeCommand = new RelayCommand(OnComplete));
+        //public ICommand CompleteCommand => _completeCommand ?? (_completeCommand = new RelayCommand(OnComplete));
+
+        public ReactiveCommand<Unit,Unit> CompleteCommand { get; set; }
 
         public ShareTargetViewModel()
         {
+            CompleteCommand = ReactiveCommand.Create(() => { });
         }
 
         public async Task LoadAsync(ShareOperation shareOperation)
